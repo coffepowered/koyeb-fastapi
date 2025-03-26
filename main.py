@@ -1,17 +1,19 @@
-from typing import Union
-
 from fastapi import FastAPI
 
 app = FastAPI()
 
 
 @app.get("/")
-def read_root():
-    return {"Hello": "World"}
+def read_main():
+    return {"message": "Hello World from main app"}
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+subapi = FastAPI()
 
-    
+
+@subapi.get("/sub")
+def read_sub():
+    return {"message": "Hello World from sub API"}
+
+
+app.mount("/subapi", subapi)
